@@ -1,0 +1,30 @@
+* {
+    font-size: 20px;
+    font-family: monospace;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.button {
+    margin: 5px auto;
+}
+
+#formulaInput, #answerInput {
+    overflow: hidden;
+}
+
+#resultSection, #testSection {
+    display: none;
+}

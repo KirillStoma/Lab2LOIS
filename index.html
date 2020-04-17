@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles.css">
+        <title>Перечислить фиктивные пропозициональные переменные в формуле</title>
+    </head>
+
+    <body>
+        <div>
+            <p id="message">Введите формулу</p>
+            <p id="dummies"></p>
+            <p id="truthTable"></p>
+    
+            <div id="checking">
+                <input id="formulaInput" type="text">
+                <button class="button" type="submit" onclick="encount(document.getElementById('formulaInput').value)"><span>Подсчитать</span></button>
+            </div>
+            
+            <div id="testLink"><span><a href="test.html" onclick="redirect()">Тестирование</a></span></div>
+        </div>
+
+        <script src="main.js"></script>
+    </body>
+</html>
