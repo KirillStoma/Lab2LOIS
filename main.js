@@ -3,7 +3,7 @@
 // Выполнена студентом группы 721701 БГУИР Стома Кирилл
 // В файле содержатся функции разбора формулы, проверки ее соответствию грамматике и получения
 // всех фиктивных пропозициональных переменных
-// 16.04.2020
+// 19.04.2020
 
 let _atoms;
 let _sets;
@@ -11,9 +11,6 @@ let _results;
 
 function encountDummyVars(formula) {
     let uniqueAtoms = getUniqueAtoms(formula);
-    if (uniqueAtoms.length === 1) {
-        return [];
-    }
 
     let sets = getValueSets(uniqueAtoms);
     let results = getFunctionResults(formula, uniqueAtoms, sets);
@@ -238,8 +235,9 @@ function startTest() {
 }
 
 function next() {
-    let currentAnswer = document.getElementById("answerInput").value;
-    let isCorrectAnswered = (currentAnswer == currentQuestion.answer);
+    let currentAnswer = document.getElementById("answerInput").value.split(',').filter(atom => atom !== '');
+    let isCorrectAnswered = (currentAnswer.length === currentQuestion.answer.length) && 
+        (currentQuestion.answer.every(atom => currentAnswer.indexOf(atom) !== -1));
 
     if (isCorrectAnswered) {
         correctAnswers++;
@@ -267,7 +265,7 @@ function createQuestion() {
     let formula = generateFormula(countOfGroups, countOfArgs);
     let answer = encountDummyVars(formula);
 
-    return new Question(formula, answer.length);
+    return new Question(formula, answer);
 }
 
 function random(max) {

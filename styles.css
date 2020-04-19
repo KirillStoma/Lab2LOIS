@@ -17,6 +17,10 @@ div {
     flex-direction: column;
 }
 
+#formula {
+    margin: 15px;
+}
+
 .button {
     margin: 5px auto;
 }
