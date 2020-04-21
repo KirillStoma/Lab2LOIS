@@ -3,7 +3,29 @@
 // Выполнена студентом группы 721701 БГУИР Стома Кирилл
 // В файле содержатся функции разбора формулы, проверки ее соответствию грамматике и получения
 // всех фиктивных пропозициональных переменных
-// 19.04.2020
+// 20.04.2020
+
+class TestCase {
+    constructor(formula, expected) {
+        this.formula = formula;
+        this.expected = expected;
+    }
+}
+
+let testCases = [
+    new TestCase("0", null),
+    new TestCase("(A&0)", ["A"]),
+    new TestCase("((A|(!A))|B)", ["A", "B"]),
+    new TestCase("((A~A)->A)", null),
+    new TestCase("((B->C)|(D~D))", ["D", "B", "C"]),
+    new TestCase("(((B->(!B))->B)|1)", ["B"]),
+    new TestCase("(((F~B)|0)|1)", ["F", "B"]),
+    new TestCase("V", null),
+    new TestCase("(K&(!K))", ["K"]),
+    new TestCase("(((L->R)->V)~L)", null),
+    new TestCase("((!(!(!K)))|(!K))", null),
+    new TestCase("((S|V)|((!S)|(!V)))", ["S", "V"]),
+];
 
 let _atoms;
 let _sets;
@@ -11,6 +33,10 @@ let _results;
 
 function encountDummyVars(formula) {
     let uniqueAtoms = getUniqueAtoms(formula);
+
+    if (uniqueAtoms.length == 0) {
+        return [];
+    }
 
     let sets = getValueSets(uniqueAtoms);
     let results = getFunctionResults(formula, uniqueAtoms, sets);
@@ -22,6 +48,30 @@ function encountDummyVars(formula) {
 
     return dummies;
 }
+
+testCases.forEach(testCase => {
+    let dummies = encountDummyVars(testCase.formula);
+    let message = testCase.formula + " | actual: " + (dummies.length === 0 ? "null" : dummies) + "; expected: ";
+    let passed = false;
+
+    if (testCase.expected === null) {
+        message += "null";
+
+        if (dummies.length === 0) {
+            passed = true;
+        }
+    } else {
+        message += testCase.expected;
+        passed = dummies.every(dummy => testCase.expected.indexOf(dummy) !== -1);
+    }
+
+    message += " | " + (passed ? "passed" : "not passed"); 
+    console.log(message);
+
+    if (!passed) {
+        document.body.innerHTML = message;
+    }
+});
 
 function getFunctionResults(formula, atoms, sets) {
     let results = [];
@@ -56,8 +106,10 @@ function addValues(values, atoms, formula) {
 function getFormulaValue(formula) {
     while (!formula.match(/^[01]$/g)) {
         formula = calcNegation(formula);
+        
         formula = calcConjunction(formula);
         formula = calcDisjunction(formula);
+        
         formula = calcEquivalence(formula);
         formula = calcImplication(formula);
     }

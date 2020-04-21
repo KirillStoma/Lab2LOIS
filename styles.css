@@ -27,6 +27,7 @@ div {
 
 #formulaInput, #answerInput {
     overflow: hidden;
+    width: 300px;
 }
 
 #resultSection, #testSection {
